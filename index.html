@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CozySpace | Aesthetic Student Journal</title>
+    <!-- Fonts: Outfit (Clean Sans) & Lora (Elegant Serif) -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Aesthetic Blurred Background Blobs -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <div class="app-layout">
+        
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar glass-panel">
+            <div class="brand">
+                <i class="ri-sparkling-fill"></i>
+                <span>CozySpace.</span>
+            </div>
+
+            <!-- CGPA Target Widget -->
+            <div class="cgpa-widget">
+                <div class="cgpa-header">
+                    <span>My Target</span>
+                    <button id="edit-cgpa"><i class="ri-edit-line"></i></button>
+                </div>
+                <h2 id="cgpa-display">3.85</h2>
+                <div class="progress-bg"><div class="progress-fill" style="width: 85%;"></div></div>
+                <p class="italic-text">Manifesting Dean's List ✨</p>
+            </div>
+
+            <!-- View Switcher -->
+            <nav class="main-menu">
+                <p class="menu-label">WORKSPACE</p>
+                <button class="menu-item active" data-view="list">
+                    <i class="ri-list-check"></i> List View
+                </button>
+                <button class="menu-item" data-view="board">
+                    <i class="ri-layout-column-line"></i> Kanban Board
+                </button>
+            </nav>
+
+            <!-- Ambient Mixer -->
+            <div class="ambient-mixer">
+                <p class="menu-label">AMBIENT SOUNDS</p>
+                <div class="sound-item">
+                    <button class="sound-btn" id="btn-rain" title="Soft Rain">🌧️</button>
+                    <input type="range" id="vol-rain" class="custom-slider" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                <div class="sound-item">
+                    <button class="sound-btn" id="btn-cafe" title="Cozy Cafe">☕</button>
+                    <input type="range" id="vol-cafe" class="custom-slider" min="0" max="1" step="0.1" value="0.5">
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <h1 id="live-clock">00:00</h1>
+                <p id="live-date">Isnin, 24 Okt</p>
+            </div>
+        </aside>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main class="main-content">
+            
+            <header class="top-header">
+                <div>
+                    <h2>Selamat maju jaya, <span class="serif-text">Pelajar.</span> 🌿</h2>
+                    <p>Ambil nafas panjang. Buat satu per satu.</p>
+                </div>
+                <button class="btn-primary" id="open-task-modal">
+                    <i class="ri-quill-pen-line"></i> Tulis Tugasan
+                </button>
+            </header>
+
+            <!-- VIEW 1: LIST VIEW -->
+            <section id="view-list" class="view-section active">
+                <div class="filter-bar">
+                    <div class="search-box glass-panel">
+                        <i class="ri-search-2-line"></i>
+                        <input type="text" id="search-task" placeholder="Cari nota atau tugasan...">
+                    </div>
+                    <select id="filter-category" class="select-aesthetic glass-panel">
+                        <option value="All">Semua Kategori</option>
+                        <option value="Assignment">📝 Assignment</option>
+                        <option value="Project">💻 Project</option>
+                        <option value="Exam">🎓 Exam Prep</option>
+                    </select>
+                </div>
+
+                <div class="task-list-container">
+                    <div id="empty-state-list" class="empty-state hidden">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3094/3094836.png" alt="Relax">
+                        <h3 class="serif-text">Ketenangan...</h3>
+                        <p>Tiada tugasan tertunggak. Berehatlah.</p>
+                    </div>
+                    <ul id="task-list-ui">
+                        <!-- List Tasks Injected Here -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- VIEW 2: KANBAN BOARD -->
+            <section id="view-board" class="view-section hidden">
+                <div class="kanban-wrapper">
+                    
+                    <!-- TO DO COLUMN -->
+                    <div class="kanban-col">
+                        <div class="kanban-header">
+                            <span class="dot grey"></span>
+                            <h3 class="serif-text">To Do</h3>
+                            <span class="count" id="count-todo">0</span>
+                        </div>
+                        <div class="kanban-body" id="board-todo" data-status="todo"></div>
+                    </div>
+
+                    <!-- DOING COLUMN -->
+                    <div class="kanban-col">
+                        <div class="kanban-header">
+                            <span class="dot yellow"></span>
+                            <h3 class="serif-text">In Progress</h3>
+                            <span class="count" id="count-doing">0</span>
+                        </div>
+                        <div class="kanban-body" id="board-doing" data-status="doing"></div>
+                    </div>
+
+                    <!-- DONE COLUMN -->
+                    <div class="kanban-col">
+                        <div class="kanban-header">
+                            <span class="dot green"></span>
+                            <h3 class="serif-text">Completed</h3>
+                            <span class="count" id="count-done">0</span>
+                        </div>
+                        <div class="kanban-body" id="board-done" data-status="done"></div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= MODALS ================= -->
+    
+    <!-- ADD/EDIT TASK MODAL -->
+    <div id="task-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-panel">
+            <div class="modal-header">
+                <h3 id="modal-title" class="serif-text">Coretan Baru</h3>
+                <button class="close-modal"><i class="ri-close-line"></i></button>
+            </div>
+            
+            <div class="modal-body scrollable">
+                <div class="form-group">
+                    <label>Tajuk Tugasan</label>
+                    <input type="text" id="inp-title" class="input-aesthetic" placeholder="Apa yang bermain di fikiran?">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Waktu Hantar</label>
+                        <input type="datetime-local" id="inp-datetime" class="input-aesthetic">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select id="inp-category" class="input-aesthetic">
+                            <option value="Assignment">Assignment</option>
+                            <option value="Project">Final Project</option>
+                            <option value="Exam">Exam Prep</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tahap Kepentingan (Eisenhower)</label>
+                    <div class="priority-selector">
+                        <label class="radio-card high">
+                            <input type="radio" name="priority" value="High" checked>
+                            <div class="card-content">
+                                <strong>Penting & Segera</strong>
+                                <span>Fokus sekarang</span>
+                            </div>
+                        </label>
+                        <label class="radio-card medium">
+                            <input type="radio" name="priority" value="Medium">
+                            <div class="card-content">
+                                <strong>Penting Sahaja</strong>
+                                <span>Rancang masa</span>
+                            </div>
+                        </label>
+                        <label class="radio-card low">
+                            <input type="radio" name="priority" value="Low">
+                            <div class="card-content">
+                                <strong>Biasa</strong>
+                                <span>Bila-bila santai</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SUBTASKS SECTION -->
+                <div class="form-group">
+                    <label>Pecahan Langkah (Sub-tasks)</label>
+                    <div class="subtask-input-row">
+                        <input type="text" id="inp-subtask" class="input-aesthetic" placeholder="Taip langkah kecil & tekan Enter...">
+                        <button type="button" id="btn-add-subtask" class="btn-secondary">Tambah</button>
+                    </div>
+                    <ul id="modal-subtask-list" class="subtask-list-mini">
+                        <!-- Subtasks injected here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-text close-modal">Batal</button>
+                <button class="btn-primary" id="btn-save-task">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO ELEMENTS -->
+    <audio id="audio-rain" loop src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_bb630cc098.mp3?filename=heavy-rain-nature-sounds-8186.mp3"></audio>
+    <audio id="audio-cafe" loop src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=cafe-ambience-10874.mp3"></audio>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
